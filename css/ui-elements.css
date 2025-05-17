@@ -1,0 +1,1103 @@
+/* css/ui-elements.css */
+/* ======================================================== */
+/* Utility & UI Styles                                    */
+/* ======================================================== */
+
+/* Block selection style */
+.editor-area .editor-block.block-selected:not(.callout-block):not([data-block-type="toggle"]):not([data-block-type="image"]) {
+    background-color: var(--selection-bg-color);
+    border-color: transparent;
+    border-radius: 5px;
+    outline: none;
+    box-shadow: none;
+}
+.editor-area .editor-block.callout-block.block-selected,
+.editor-area .editor-block[data-block-type="toggle"].block-selected,
+.editor-area .editor-block[data-block-type="image"].block-selected {
+    border-color: transparent;
+    box-shadow: none;
+    border-radius: var(--frame-border-radius, 10px);
+    position: relative; /* For ::before overlay */
+    outline: none;
+}
+.editor-area .editor-block.callout-block.block-selected::before { /* Overlay for callout selection */
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(var(--selection-bg-color-rgb), 0.6);
+    border-radius: inherit; z-index: 0; pointer-events: none;
+    transition: background-color 0.15s ease-out;
+}
+.editor-area .editor-block[data-block-type="toggle"].block-selected::before { /* Overlay for toggle selection */
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--selection-bg-color);
+    border-radius: inherit; z-index: 0; pointer-events: none;
+    transition: background-color 0.15s ease-out;
+}
+.editor-area .editor-block[data-block-type="image"].block-selected { /* Specific for image selection */
+    background-color: var(--selection-bg-color);
+    border-color: var(--border-color); /* Maintain border for image selection */
+}
+/* Default (non-selected) styles to reset any selection effect */
+.editor-area .editor-block:not(.block-selected):not(.callout-block):not([data-block-type="toggle"]):not([data-block-type="image"]) {
+    background-color: transparent; border-color: transparent;
+    box-shadow: none; outline: none; border-radius: 3px;
+}
+.editor-area .editor-block.callout-block:not(.block-selected) {
+    background-color: var(--callout-bg-color); border-color: transparent;
+    box-shadow: none; outline: none; border-radius: 6px;
+}
+.editor-area .editor-block[data-block-type="toggle"]:not(.block-selected) {
+    background-color: transparent; border-color: transparent;
+    box-shadow: none; outline: none; border-radius: 3px;
+}
+.editor-area .editor-block[data-block-type="image"]:not(.block-selected) {
+    background-color: transparent; border-color: var(--border-color);
+    box-shadow: none; outline: none; border-radius: 4px;
+}
+.editor-area .editor-block.callout-block:not(.block-selected)::before,
+.editor-area .editor-block[data-block-type="toggle"]:not(.block-selected)::before {
+    content: none; /* Remove selection overlay */
+}
+
+/* Dragging styles */
+.editor-block.dragging { /* Style for the block being dragged */
+    opacity: var(--ghost-opacity, 0.6);
+    background-color: var(--hover-bg-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 101;
+    border-radius: 5px;
+    border: none !important; /* Override other borders */
+    outline: none !important;
+    padding-left: 0; /* Reset padding for consistent look */
+    margin-left:0;
+}
+.editor-block.dragging::before, .editor-block.dragging::after {
+    content: none !important; /* Remove pseudo-elements during drag */
+}
+.dragging-clone { /* Styles for the ghost element (clone) shown while dragging */
+    /* Usually matches .editor-block.dragging or has its own distinct style */
+}
+
+.icon-button { /* General class for icon-only buttons */
+    background: none; border: none; cursor: pointer;
+    padding: 5px; line-height: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+}
+
+/* Selection rectangle (Lasso) */
+#selection-rectangle {
+    position: absolute;
+    border: 1px dashed var(--drop-indicator-color);
+    background-color: rgba(143, 205, 255, 0.1);
+    pointer-events: none; /* Doesn't interfere with mouse events */
+    z-index: 1001; /* Above editor content but below menus */
+    display: none; /* Shown by JS */
+}
+
+/* Shake animation for temporary error highlight on list items */
+@keyframes simple-shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+    20%, 40%, 60%, 80% { transform: translateX(3px); }
+}
+.editor-area .editor-block.shake-marker[data-block-type="li"] > span.list-marker {
+    animation: simple-shake 0.4s ease-in-out 1;
+}
+
+/* ======================================================== */
+/* Стили для ссылок в редакторе */
+/* ======================================================== */
+.editor-area a {
+    color: var(--link-text-color, #6D6C69);
+    text-decoration: none; /* Usually links in editors don't have underlines by default */
+    border-bottom: 1px solid var(--link-border-color, #C2C1BF);
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+/* Optional: Hover style for links if needed */
+/* .editor-area a:hover {
+    border-bottom-color: var(--link-text-color);
+} */
+
+/* ======================================================== */
+/* Стили для Slash Command Menu */
+/* ======================================================== */
+.slash-menu {
+    position: absolute;
+    z-index: 100; /* Above editor blocks */
+    background-color: var(--menu-bg-color);
+    border: 1px solid var(--menu-border-color);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px var(--menu-shadow-color);
+    padding: 6px 8px;
+    min-width: 280px;
+    max-height: 300px; /* Allow scrolling for many items */
+    overflow-y: auto;
+    display: none; /* Shown by JS */
+    font-size: 14px;
+}
+.slash-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Push hint to the right */
+    padding: 6px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.1s ease-out;
+    border-radius: 4px;
+    margin: 1px 0; /* Small gap between items */
+}
+.slash-menu-item:hover {
+    background-color: var(--menu-item-hover-bg);
+}
+.slash-menu-item.selected { /* Style for keyboard-selected item */
+    background-color: var(--menu-item-selected-bg);
+    color: var(--primary-text-color);
+}
+.slash-menu-icon {
+    width: 24px; /* Fixed width for icon container */
+    height: 20px; /* Fixed height for icon container */
+    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden; /* Ensure icons don't overflow their box */
+}
+.slash-menu-icon img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    vertical-align: middle; /* Align icons nicely */
+}
+.slash-menu-label {
+    flex-grow: 1; /* Label takes available space */
+    margin-right: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.slash-menu-hint {
+    color: var(--placeholder-color);
+    font-size: 0.9em;
+    flex-shrink: 0; /* Hint doesn't shrink */
+}
+
+/* ======================================================== */
+/* Drag Handle Styles */
+/* ======================================================== */
+.drag-handle {
+    position: absolute;
+    top: 0; /* Base top position, overridden by specific block types */
+    left: -28px; /* Position to the left of the block */
+    width: 28px;
+    height: 1.5em; /* Default height, adjust per block */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    color: #aaa; /* Default handle icon color */
+    opacity: 0; /* Hidden by default */
+    pointer-events: none; /* Not interactive when hidden */
+    transition: opacity 0.05s ease-out;
+    z-index: 10; /* Above block content */
+}
+.editor-block.handle-visible > .drag-handle { /* Show handle on hover (controlled by JS) */
+    opacity: 1; pointer-events: auto;
+}
+.drag-handle:hover { color: #333; } /* Darker on hover */
+.drag-handle::before { /* Background element for better grab area feel */
+    content: ''; position: absolute; top: 0px; left: 5px;
+    width: 18px; height: 100%;
+    background-color: rgba(55, 53, 47, 0.08);
+    border-radius: 4px; z-index: -1; opacity: 0;
+    transition: opacity 0.1s ease-out; pointer-events: none;
+}
+.drag-handle:hover::before { opacity: 1; }
+body.user-is-dragging .drag-handle { cursor: grabbing; } /* Cursor while dragging */
+.drag-handle svg { /* SVG icon style */
+    display: block; width: 12px; height: 18px; pointer-events: none;
+}
+
+
+/* ======================================================== */
+/* Drop Indicator Styles (DND Направляющая) V2             */
+/* ======================================================== */
+.drop-indicator {
+    position: absolute;
+    height: var(--drop-indicator-height, 4px);
+    display: none; /* Shown by JS */
+    pointer-events: none;
+    z-index: 100; /* Above blocks but below dragged element ghost */
+    margin-left: 0 !important; /* Ensure no external margins affect it */
+    border-radius: 0;
+    --indent-size-l1: 0px; /* CSS var for first indent level gradient stop */
+    --indent-size-l2: 0px; /* CSS var for second indent level gradient stop */
+    --drop-indicator-color-rgb: 143, 205, 255; /* Base color RGB for rgba() */
+    transition: left 0.05s ease-out, width 0.05s ease-out, opacity 0.1s ease-out, top 0.05s linear, background 0.05s linear;
+    background-color: transparent; /* Base, gradient will override */
+}
+.drop-indicator::before,
+.drop-indicator::after { /* Remove any default pseudo-elements if inherited */
+    content: none;
+    display: none;
+}
+/* No indent, solid color */
+.drop-indicator.indicator-level-0 {
+    background-color: var(--drop-indicator-color, #8FCDFF);
+}
+/* Level 1 indent indicator (fades from transparent to solid) */
+.drop-indicator.indicator-fade {
+    background: linear-gradient(to right,
+        rgba(var(--drop-indicator-color-rgb), 0.2) 0,
+        rgba(var(--drop-indicator-color-rgb), 0.2) var(--indent-size-l1),
+        var(--drop-indicator-color) var(--indent-size-l1),
+        var(--drop-indicator-color) 100%);
+}
+/* Fallback if indent-size-l1 is 0 (effectively no indent) */
+.drop-indicator.indicator-fade[style*="--indent-size-l1: 0px"] {
+    background: var(--drop-indicator-color);
+}
+/* Level 2 indent indicator (two-step fade) */
+.drop-indicator.indicator-level-2-fade {
+    background: linear-gradient(to right,
+        rgba(var(--drop-indicator-color-rgb), 0.1) 0, /* Most transparent part */
+        rgba(var(--drop-indicator-color-rgb), 0.1) var(--indent-size-l1),
+        rgba(var(--drop-indicator-color-rgb), 0.3) var(--indent-size-l1), /* Mid transparent part */
+        rgba(var(--drop-indicator-color-rgb), 0.3) var(--indent-size-l2),
+        var(--drop-indicator-color) var(--indent-size-l2), /* Solid part */
+        var(--drop-indicator-color) 100%);
+}
+/* Fallbacks for level 2 if one of the indents is 0 */
+.drop-indicator.indicator-level-2-fade[style*="--indent-size-l1: 0px"] { /* If first indent is 0, acts like a single step fade to l2 */
+    background: linear-gradient(to right,
+        rgba(var(--drop-indicator-color-rgb), 0.3) 0,
+        rgba(var(--drop-indicator-color-rgb), 0.3) var(--indent-size-l2),
+        var(--drop-indicator-color) var(--indent-size-l2),
+        var(--drop-indicator-color) 100%);
+}
+.drop-indicator.indicator-level-2-fade[style*="--indent-size-l2: 0px"] { /* If second indent is 0, effectively solid color */
+    background: var(--drop-indicator-color);
+}
+/* If l1 and l2 indents are the same, acts like a single step fade to l1 */
+.drop-indicator.indicator-level-2-fade[style*="--indent-size-l1: var(--indent-size-l2)"] {
+    background: linear-gradient(to right,
+        rgba(var(--drop-indicator-color-rgb), 0.1) 0,
+        rgba(var(--drop-indicator-color-rgb), 0.1) var(--indent-size-l1),
+        var(--drop-indicator-color) var(--indent-size-l1),
+        var(--drop-indicator-color) 100%);
+}
+
+/* ======================================================== */
+/* DND List Sequence Highlighting */
+/* ======================================================== */
+.editor-area .editor-block.list-highlight-parent,
+.editor-area .editor-block.list-highlight-child {
+    background-color: transparent !important; /* Override other backgrounds */
+    position: relative; /* For ::before pseudo-element */
+    z-index: 1; /* Ensure pseudo-element is behind content */
+    box-shadow: none; outline: none; border-radius: 0;
+    transition: none; /* Disable transitions during highlighting */
+}
+.editor-area .editor-block.list-highlight-parent::before,
+.editor-area .editor-block.list-highlight-child::before { /* The highlight itself */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: var(--highlight-offset-left, 0px); /* Controlled by JS for indent */
+    right: 0; /* Span full width */
+    width: auto; /* Auto width based on left/right */
+    height: calc(100% + 7px); /* Cover block and small gap */
+    background-color: var(--list-highlight-bg-color, rgba(143, 205, 255, 0.15)) !important;
+    z-index: -1; /* Behind block content */
+    pointer-events: none;
+    border-radius: 0; /* Default, overridden for first/last */
+    transition: background-color 0.1s ease-out, border-radius 0.1s ease-out, left 0.1s ease-out;
+}
+.editor-area .editor-block.list-highlight-parent::before { /* Top corners for parent */
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.editor-area .editor-block.last-highlight-child::before { /* Bottom corners for last child */
+    height: 100%; /* Exact height for last item */
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.editor-area .editor-block.list-highlight-parent.last-highlight-child::before { /* If parent is also the only/last item */
+    height: 100%;
+    border-radius: 4px; /* All corners rounded */
+}
+/* Interaction with block selection */
+.editor-area .editor-block.block-selected.list-highlight-parent::before,
+.editor-area .editor-block.block-selected.list-highlight-child::before {
+    display: none; /* Hide highlight pseudo-element if block is also selected */
+}
+.editor-area .editor-block.block-selected.list-highlight-parent,
+.editor-area .editor-block.block-selected.list-highlight-child {
+    background-color: var(--selection-bg-color) !important; /* Show selection color instead */
+    border-radius: 4px; /* Consistent radius for selected items */
+}
+
+/* ======================================================== */
+/* Стили для Handle Context Menu */
+/* ======================================================== */
+.handle-menu {
+    position: absolute;
+    z-index: 1050;
+    background-color: var(--menu-bg-color);
+    border: 1px solid var(--menu-border-color);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px var(--menu-shadow-color);
+    padding: 4px; /* Compact padding */
+    min-width: 220px;
+    display: none; /* Shown by JS */
+    font-size: 14px;
+    user-select: none; /* Prevent text selection inside menu */
+}
+.handle-menu.submenu { /* Submenu specific styles */
+    padding: 6px 8px; /* Slightly more padding for submenu */
+    min-width: 260px;
+    max-height: 300px; /* Scrollable if too many items */
+    overflow-y: auto;
+    z-index: 1051; /* Above main handle menu */
+}
+.handle-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.1s ease-out;
+    border-radius: 4px;
+    margin: 1px 0; /* Small gap */
+    position: relative; /* For arrow positioning */
+}
+.handle-menu-item:hover {
+    background-color: var(--menu-item-hover-bg);
+}
+.handle-menu-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    color: var(--secondary-text-color); /* Default icon color */
+}
+.handle-menu-icon img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    vertical-align: middle;
+    filter: grayscale(30%); /* Slight desaturation for default state */
+}
+.handle-menu-item:hover .handle-menu-icon img {
+    filter: none; /* Full color on hover */
+}
+.handle-menu-label {
+    flex-grow: 1;
+    margin-right: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--primary-text-color);
+}
+.handle-menu-arrow { /* Arrow for items with submenu */
+    margin-left: auto; /* Push to the right */
+    color: var(--placeholder-color);
+    font-size: 0.8em;
+    line-height: 1;
+}
+.handle-menu-item.has-submenu { /* Specific style if item has submenu */
+    /* e.g., different padding or indicator */
+}
+
+/* ======================================================== */
+/* Text Context Menu Styles (Updated Separator)             */
+/* ======================================================== */
+.text-context-menu {
+    position: absolute;
+    z-index: 1070; /* High z-index */
+    background-color: var(--menu-bg-color, #ffffff);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.05); /* Subtle border */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12), 0px 1px 4px rgba(0, 0, 0, 0.08); /* Softer shadow */
+    padding: 4px; /* Compact padding */
+    user-select: none; /* Prevent text selection in menu */
+    display: flex; /* Align buttons horizontally */
+    gap: 2px; /* Small gap between buttons/separators */
+    align-items: center; /* Vertically align items */
+}
+.text-context-menu-button {
+    background: none; border: none;
+    padding: 5px; /* Clickable area */
+    border-radius: 4px; /* Slightly rounded buttons */
+    cursor: pointer; line-height: 1;
+    color: var(--primary-text-color);
+    transition: background-color 0.1s ease-out, color 0.1s ease-out, background-color 0.1s ease-out;
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 28px; min-height: 28px; /* Ensure consistent button size */
+    font-family: inherit; vertical-align: middle; /* Align with text if any */
+}
+.text-context-menu-button:hover {
+    background-color: var(--menu-item-hover-bg, #f1f3f4);
+}
+.text-context-menu-button.active { /* Style for active/toggled buttons */
+    background-color: var(--menu-item-selected-bg, #ededed);
+}
+.text-context-menu-button img,
+.text-context-menu-button svg.text-context-menu-icon-svg { /* Icon styling */
+    width: 16px; height: 16px; display: block; object-fit: contain;
+}
+.text-context-menu-arrow { /* Arrow for dropdowns */
+    display: inline-flex; align-items: center;
+    margin-left: 4px; line-height: 1;
+}
+.text-context-menu-arrow svg.text-context-menu-arrow-svg {
+    width: 8px; height: 8px; display: block;
+}
+.text-context-menu-separator { /* Separator style */
+    width: 1px; height: 18px; /* Or adjust height as needed */
+    background-color: var(--border-color, #e0e0e0);
+    margin: 0 4px; /* Spacing around separator */
+    align-self: center; /* Ensure it's centered with buttons */
+}
+
+/* ======================================================== */
+/* Color Menu Styles (V6 - Final Swatch Styles Adjusted)   */
+/* ======================================================== */
+.color-menu {
+    position: absolute;
+    z-index: 1080; /* Above text context menu */
+    background-color: var(--menu-bg-color, #ffffff);
+    border-radius: 6px;
+    border: 1px solid var(--menu-border-color);
+    box-shadow: 0 4px 12px var(--menu-shadow-color);
+    padding: 10px 12px;
+    display: none; /* Shown by JS */
+    user-select: none;
+    width: auto; /* Width based on content */
+    /* Calculate min-width for 5 swatches + gaps + padding */
+    min-width: calc( (var(--color-swatch-size, 25px) * 5) + (var(--color-swatch-gap, 7px) * 4) + 2px ); /* Added 2px for potential border/padding adjustments if any */
+    font-family: inherit;
+}
+.color-menu-section {
+    margin-bottom: 14px;
+}
+.color-menu-section:last-child {
+    margin-bottom: 0;
+}
+.color-menu-section.recent-colors-section:empty { /* Hide recent if empty */
+    display: none;
+}
+.color-menu-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--secondary-text-color);
+    margin-bottom: 8px;
+    text-align: left;
+}
+.color-swatch-container {
+    display: grid;
+    grid-template-columns: repeat(5, var(--color-swatch-size, 25px));
+    gap: var(--color-swatch-gap, 7px);
+    justify-content: start; /* Align grid items to the start if fewer than 5 */
+}
+.color-swatch {
+    width: var(--color-swatch-size, 25px);
+    height: var(--color-swatch-size, 25px);
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+    position: relative; /* For potential absolute positioned elements inside */
+    overflow: hidden; /* Clip content if needed */
+    vertical-align: middle;
+    appearance: none; /* Reset default button appearance */
+    -webkit-appearance: none;
+    background: none; /* Reset default button background */
+    color: inherit; /* Reset default button text color */
+    display: inline-flex; /* Align content inside */
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-width: 2px; /* Consistent border width */
+}
+.color-swatch:hover {
+    transform: scale(1.15); /* Slightly enlarge on hover */
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2); /* Add subtle shadow */
+}
+.color-swatch.color-swatch-highlight { /* Specific for highlight swatches */
+    border-radius: 5px;
+}
+.color-swatch.color-swatch-highlight svg { /* For the diagonal line on "transparent" */
+    display: block;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    stroke: #ccc; /* Color of the diagonal line */
+    stroke-width: 1px;
+    overflow: visible; /* Ensure line is not clipped */
+}
+.color-swatch.color-swatch-highlight[data-color="transparent"] { /* Explicit style for transparent swatch */
+    border-color: #333333 !important; /* Dark border to make it visible */
+    background-color: #fff !important; /* White background */
+}
+.color-swatch.color-swatch-highlight:not([data-color="transparent"]) svg { /* Hide SVG line if not transparent */
+    display: none;
+}
+.color-swatch.color-swatch-text { /* Specific for text color swatches */
+    border-radius: 5px;
+    background-color: #fff !important; /* Always white background for text swatch itself */
+}
+.color-swatch.color-swatch-text[data-color="inherit"] { /* Border for default text color */
+    border-color: #333333 !important;
+}
+.color-swatch.color-swatch-text span { /* The 'A' character */
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    pointer-events: none; /* Text itself not interactive */
+}
+.color-swatch.color-swatch-text svg { /* No SVG for text swatches */
+    display: none;
+}
+
+/* ======================================================== */
+/* Inline Code Formatting */
+/* ======================================================== */
+.inline-code {
+    background-color: var(--inline-code-bg-color, #f0f0f0);
+    color: var(--inline-code-text-color, #D0695C);
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; /* Monospace font stack */
+    padding: 1px 4px; /* Minimal padding */
+    border-radius: 4px;
+    font-size: 0.9em; /* Slightly smaller than surrounding text */
+}
+
+/* ======================================================== */
+/* Custom Tooltip Styles (v2) */
+/* ======================================================== */
+.custom-tooltip {
+    position: absolute;
+    z-index: 1090; /* Above most menus */
+    background-color: rgba(0, 0, 0, 0.85); /* Dark background */
+    color: #ffffff; /* Light text */
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 1.4;
+    white-space: pre-wrap; /* Allow multi-line tooltips if needed */
+    text-align: center;
+    pointer-events: none; /* Tooltip should not be interactive */
+    transition: opacity 0.1s ease-out;
+    opacity: 0; /* Hidden by default */
+    display: none; /* Controlled by JS */
+}
+.custom-tooltip.visible {
+    display: block; /* Or inline-block if preferred */
+    opacity: 1;
+}
+.tooltip-shortcut { /* Styling for shortcut hint in tooltip */
+    opacity: 0.7;
+    display: block; /* On a new line */
+    margin-top: 2px;
+    font-size: 0.9em;
+}
+
+/* ======================================================== */
+/* Link Input Menu Styles (v5) */
+/* ======================================================== */
+.link-menu { /* Main container for the link input menu */
+    position: absolute;
+    z-index: 1080; /* Same as color menu, ensure proper layering if overlap */
+    background-color: var(--menu-bg-color, #ffffff);
+    border: none; /* Clean look */
+    border-radius: 15px; /* More rounded */
+    box-shadow: 0 6px 16px var(--menu-shadow-color, rgba(0, 0, 0, 0.12)); /* Softer shadow */
+    padding: 10px;
+    min-width: 330px;
+    max-width: 400px;
+    display: none; /* Shown by JS */
+    font-size: 14px;
+    color: var(--primary-text-color);
+    user-select: none;
+}
+.link-menu-input { /* Input field for URL or search */
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    border: 2px solid transparent; /* Transparent border for focus transition */
+    background-color: var(--hover-bg-color, #f1f3f4); /* Light bg for input */
+    border-radius: 10px; /* Rounded input field */
+    margin-bottom: 8px;
+    font-size: inherit;
+    font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* Consistent font */
+    outline: none;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.link-menu-input:focus {
+    border: 2px solid var(--primary-text-color, #333); /* Darker border on focus */
+    background-color: var(--menu-bg-color, #ffffff); /* White background on focus */
+    box-shadow: none; /* Remove any default focus shadow if browser adds one */
+}
+.link-menu-input::placeholder {
+    color: var(--placeholder-color);
+}
+.link-menu-results { /* List for search results/recent docs */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px; /* Scrollable list */
+    overflow-y: auto;
+}
+.link-menu-section-title { /* Title for sections like "Recent" or "Found" */
+    font-size: 12px;
+    color: var(--secondary-text-color);
+    padding: 4px 8px; /* Spacing for title */
+    margin-top: 5px;
+    font-weight: 500;
+    text-align: left;
+}
+.link-menu-results li { /* Individual result item */
+    display: flex;
+    align-items: center;
+    padding: 4px 6px;
+    border: 2px solid transparent; /* For hover/selection indication */
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 2px;
+    background-color: transparent;
+    transition: border-color 0.1s ease-out;
+    min-height: 39px; /* Consistent height */
+    box-sizing: border-box;
+}
+.link-menu-results li:last-child {
+    margin-bottom: 0;
+}
+.link-menu-results li:hover {
+    border: 2px solid var(--hover-bg-color, #f1f3f4); /* Highlight border on hover */
+    background-color: transparent; /* Or var(--hover-bg-color) if preferred */
+}
+.link-menu-results li.selected { /* Keyboard selected item */
+    border-color: transparent; /* Or a selection color like var(--menu-item-selected-bg) */
+    background-color: var(--menu-item-selected-bg);
+}
+.link-menu-results li i { /* Icon for document type */
+    margin-right: 8px;
+    color: var(--handle-color, #aaa);
+    font-size: 1.1em;
+    flex-shrink: 0;
+}
+.link-menu-results li span { /* Document title text */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+}
+.link-menu-no-results { /* Message when no documents are found */
+    padding: 6px 8px;
+    color: var(--placeholder-color);
+    font-style: italic;
+    text-align: center;
+    cursor: default;
+    border: 2px solid transparent;
+    min-height: 39px;
+    box-sizing: border-box;
+}
+
+/* ======================================================== */
+/* Link Hover Menu Styles (v4 - Updated Icon Hovers) */
+/* ======================================================== */
+.link-hover-menu {
+    position: absolute;
+    z-index: 1075; /* Layering */
+    background-color: var(--menu-bg-color, #ffffff);
+    border-radius: 10px;
+    border: none; /* Cleaner look */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12), 0px 1px 4px rgba(0, 0, 0, 0.08);
+    padding: 6px 10px;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Spacing between parts */
+    font-size: 14px;
+    white-space: nowrap; /* Prevent wrapping */
+    min-width: 330px; /* Ensure it's wide enough for content */
+}
+.link-hover-part { /* Base for left/center/right parts */
+    display: flex;
+    align-items: center;
+}
+.link-hover-left { /* Globe icon */
+    flex-shrink: 0;
+}
+.link-hover-center { /* Link text */
+    flex-grow: 1;
+    min-width: 150px; /* Prevent squishing */
+    max-width: 450px; /* Prevent too wide */
+    overflow: hidden; /* For ellipsis on text */
+}
+.link-hover-right { /* Action icons */
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between action icons */
+}
+.link-hover-icon {
+    width: 18px; height: 18px; display: block;
+    object-fit: contain; cursor: pointer;
+    opacity: 0.6; /* Default subdued opacity */
+    transition: opacity 0.1s ease-out, filter 0.1s ease-out, background-color 0.1s ease-out, transform 0.1s ease-out;
+    filter: grayscale(60%); /* Default subdued filter */
+    flex-shrink: 0;
+    border-radius: 4px; /* For hover background */
+    padding: 2px; /* Padding for hover background */
+    box-sizing: content-box; /* Padding doesn't add to width/height */
+}
+.link-hover-icon:not(.link-hover-action-open img):hover { /* Hover for copy, unlink, edit */
+    opacity: 1;
+    filter: none; /* Full color */
+}
+.link-hover-icon.link-hover-action-copy:hover,
+.link-hover-icon.link-hover-action-unlink:hover,
+.link-hover-icon.link-hover-action-edit:hover {
+    background-color: var(--hover-bg-color, #f1f3f4); /* Background on icon hover */
+}
+/* Globe icon (open link) specific styling */
+.link-hover-action-open .link-hover-icon {
+    opacity: 0.6; filter: grayscale(60%); cursor: pointer;
+}
+.link-hover-action-open .link-hover-icon:hover { /* No visual change on globe icon hover */
+    opacity: 0.6; filter: grayscale(60%);
+    background-color: transparent !important; /* Ensure no bg on globe hover */
+}
+.link-hover-text { /* The displayed link (domain or title) */
+    overflow: hidden; text-overflow: ellipsis;
+    color: var(--primary-text-color, #333);
+    cursor: pointer; border-bottom: none; /* Remove underline from hover menu text */
+    line-height: 1.4; margin: 0; font-weight: 500;
+    display: block;
+}
+.link-hover-text:hover {
+    opacity: 0.8; /* Slight fade on text hover */
+}
+
+/* ======================================================== */
+/* Editor Copy/Unlink Notification Styles (Updated Positioning) */
+/* Используется #editor-global-notification из utils.js */
+/* ======================================================== */
+#editor-global-notification { /* General notification style */
+    position: absolute;
+    top: 15px; /* Position from top of main-content */
+    right: 20px; /* Position from right of main-content */
+    background-color: rgba(0, 0, 0, 0.85); /* Dark, slightly transparent */
+    color: #ffffff; /* Light text */
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+    z-index: 2000; /* High z-index to be on top */
+    display: none; /* Shown by JS */
+    align-items: center; /* Align icon and text */
+    gap: 8px;
+    opacity: 0; /* For fade transition */
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transform: translateY(-20px); /* Start off-screen for slide-in */
+    pointer-events: none; /* Not interactive */
+}
+#editor-global-notification.visible { /* Style when visible */
+    display: flex; /* Use flex to align items */
+    opacity: 1;
+    transform: translateY(0); /* Slide into view */
+}
+#editor-global-notification img.icon { /* Icon within notification */
+    width: 16px; height: 16px;
+    filter: invert(1) brightness(2); /* Make icons white */
+}
+/* .main-content должен иметь position: relative для корректного позиционирования уведомления */
+/* Это уже установлено в layout.css или editor-content.css */
+
+
+/* ======================================================== */
+/* Link Edit Menu Styles */
+/* ======================================================== */
+.link-edit-menu { /* Main container for link editing */
+    position: absolute;
+    z-index: 1085; /* Above link hover menu, text context menu */
+    background-color: var(--menu-bg-color, #ffffff);
+    border: none;
+    border-radius: 15px; /* Consistent rounding */
+    box-shadow: 0 6px 16px var(--menu-shadow-color, rgba(0, 0, 0, 0.12));
+    padding: 12px 15px;
+    width: 350px; /* Fixed width */
+    display: none; /* Shown by JS */
+    font-size: 14px;
+    color: var(--primary-text-color);
+    user-select: none;
+    font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+}
+.link-edit-label { /* Label for input fields */
+    font-size: 13px;
+    color: var(--primary-text-color);
+    margin-bottom: 6px;
+    display: block;
+    text-align: left;
+    font-weight: 500;
+}
+.link-edit-input { /* Input fields for text and URL */
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    border: 2px solid transparent;
+    background-color: var(--hover-bg-color, #f1f3f4);
+    border-radius: 10px;
+    margin-bottom: 12px; /* Space below input */
+    font-size: inherit;
+    font-family: inherit;
+    outline: none;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    color: var(--primary-text-color);
+}
+.link-edit-input:focus,
+.link-edit-input.focused { /* Style when input is focused */
+    border-color: var(--primary-text-color, #333);
+    background-color: var(--menu-bg-color, #ffffff);
+}
+.link-edit-input::placeholder {
+    color: var(--placeholder-color);
+}
+.link-edit-apply-button { /* "Apply" button */
+    display: block;
+    width: 100%;
+    padding: 9px 15px;
+    border: none;
+    background-color: #333; /* Dark background for primary action */
+    color: var(--primary-button-text, #ffffff);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease;
+    margin-top: 5px; /* Space above button */
+    font-family: inherit;
+}
+.link-edit-apply-button:hover {
+    background-color: #555; /* Darken on hover */
+}
+.link-edit-apply-button:active {
+    background-color: #222; /* Darken further on active/click */
+}
+
+/* ======================================================== */
+/* Indentation Styles (Moved from general blocks.css)     */
+/* These are more UI related to how blocks are presented    */
+/* ======================================================== */
+/* Indentation for top-level blocks */
+.editor-area > .editor-block[data-indent-level="1"]:not([data-block-type="quote"]):not([data-in-quote="true"]):not([data-block-type="callout"]):not([data-block-type="toggle"]):not([data-block-type="image"]) { margin-left: calc(var(--nested-block-indent-step) * 1); }
+.editor-area > .editor-block[data-indent-level="2"]:not([data-block-type="quote"]):not([data-in-quote="true"]):not([data-block-type="callout"]):not([data-block-type="toggle"]):not([data-block-type="image"]) { margin-left: calc(var(--nested-block-indent-step) * 2); }
+.editor-area > .editor-block[data-indent-level="3"]:not([data-block-type="quote"]):not([data-in-quote="true"]):not([data-block-type="callout"]):not([data-block-type="toggle"]):not([data-block-type="image"]) { margin-left: calc(var(--nested-block-indent-step) * 3); }
+.editor-area > .editor-block[data-indent-level="4"]:not([data-block-type="quote"]):not([data-in-quote="true"]):not([data-block-type="callout"]):not([data-block-type="toggle"]):not([data-block-type="image"]) { margin-left: calc(var(--nested-block-indent-step) * 4); }
+.editor-area > .editor-block[data-indent-level="5"]:not([data-block-type="quote"]):not([data-in-quote="true"]):not([data-block-type="callout"]):not([data-block-type="toggle"]):not([data-block-type="image"]) { margin-left: calc(var(--nested-block-indent-step) * 5); }
+.editor-area > .editor-block[data-indent-level="6"]:not([data-block-type="quote"]):not([data-in-quote="true"]):not([data-block-type="callout"]):not([data-block-type="toggle"]):not([data-block-type="image"]) { margin-left: calc(var(--nested-block-indent-step) * 6); }
+.editor-area > .editor-block[data-indent-level="7"]:not([data-block-type="quote"]):not([data-in-quote="true"]):not([data-block-type="callout"]):not([data-block-type="toggle"]):not([data-block-type="image"]) { margin-left: calc(var(--nested-block-indent-step) * 7); }
+.editor-area > .editor-block[data-indent-level="8"]:not([data-block-type="quote"]):not([data-in-quote="true"]):not([data-block-type="callout"]):not([data-block-type="toggle"]):not([data-block-type="image"]) { margin-left: calc(var(--nested-block-indent-step) * 8); }
+
+/* ======================================================== */
+/* Placeholder Styles (Moved from general blocks.css)     */
+/* These are more UI related to how blocks are presented    */
+/* ======================================================== */
+.block-content.is-empty::before,
+.toggle-title.is-empty::before {
+    position: absolute;
+    top: var(--base-content-padding-top);
+    left: var(--base-content-padding-left); /* Base left padding for placeholder */
+    color: var(--placeholder-color);
+    pointer-events: none;
+    user-select: none;
+    display: block;
+    content: ''; /* Default empty content, overridden by specific types */
+    line-height: 1.5;
+    font-size: inherit;
+    font-weight: normal;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%; /* Prevent overflow */
+    z-index: 2; /* Above block content potentially */
+}
+/* Specific placeholders - these will be overridden by block-type specific files if needed */
+.editor-block[data-block-type="p"] > .block-content.is-empty::before,
+.editor-block:not([data-block-type]) > .block-content.is-empty::before { /* Default to paragraph */
+    content: 'Введите текст или нажмите «/», чтобы выбрать блок';
+    left: 4px; /* Matches paragraph content padding */
+}
+/* Initial placeholder for empty document */
+.editor-block[data-initial-placeholder="true"] .block-content.is-empty::before,
+.editor-block[data-initial-placeholder="true"] .toggle-title.is-empty::before {
+    content: 'Нажмите Enter, чтобы начать работу с новым документом';
+}
+.editor-block[data-initial-placeholder="true"][data-block-type="p"] > .block-content.is-empty::before { left: 0px; }
+
+/* Placeholder for slash command */
+.block-content.is-slash-placeholder {
+    color: var(--placeholder-color);
+    font-style: normal;
+    background-color: var(--selection-bg-color);
+    padding: 0 2px;
+    border-radius: 3px;
+    display: inline; /* So it doesn't take full width */
+    user-select: none;
+    cursor: default;
+}
+.block-content.is-slash-placeholder::before {
+    display: none !important; /* Hide default placeholder when slash placeholder is active */
+}
+
+/* ======================================================== */
+/* Reaction Emoji Menu Styles                             */
+/* ======================================================== */
+.reaction-menu {
+    position: absolute;
+    z-index: 1090; /* Выше большинства других меню */
+    background-color: var(--menu-bg-color, #ffffff);
+    border: 1px solid var(--menu-border-color, #e0e0e0);
+    border-radius: 12px; /* Более скругленные углы, как на макете */
+    box-shadow: 0 6px 16px var(--menu-shadow-color, rgba(0, 0, 0, 0.12));
+    padding: 12px;
+    width: 300px; /* Ширина как на макете */
+    max-height: 350px; /* Максимальная высота с прокруткой */
+    /* display: none;  Управляется JS, но для flexbox лучше display: flex и скрывать через visibility или opacity, либо JS будет ставить flex */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: var(--primary-text-color);
+    user-select: none;
+    box-sizing: border-box;
+    overflow: hidden; /* Чтобы внутренний скролл работал корректно */
+    display: flex; /* Изначально flex, чтобы JS мог просто менять display: none/flex */
+    flex-direction: column;
+}
+
+.reaction-menu-search-container {
+    display: flex;
+    align-items: center;
+    padding: 0px 0px 12px 0px; /* Отступ снизу от поиска */
+    box-sizing: border-box;
+    position: relative; /* Для иконки поиска */
+}
+
+.reaction-menu-search-icon {
+    position: absolute;
+    left: 12px; /* Отступ иконки слева */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    fill: var(--placeholder-color, #aaa);
+    pointer-events: none; /* Иконка не должна перехватывать клики */
+    margin-top: -6px; /* Коррекция из-за padding-bottom у родителя */
+}
+
+.reaction-menu-search-input {
+    width: 100%;
+    padding: 8px 12px 8px 36px; /* Отступ слева для иконки */
+    border: 1.5px solid var(--border-color, #e0e0e0);
+    background-color: var(--menu-bg-color, #ffffff); /* Фон поля ввода */
+    border-radius: 8px; /* Скругление поля ввода */
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    box-sizing: border-box;
+    color: var(--primary-text-color);
+    transition: border-color 0.2s ease;
+}
+
+.reaction-menu-search-input:focus {
+    border-color: var(--primary-button-bg, #4285f4);
+}
+
+.reaction-menu-search-input::placeholder {
+    color: var(--placeholder-color, #aaa);
+    opacity: 1;
+}
+
+.reaction-menu-scroll-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    /* Стилизация скроллбара для Webkit (Chrome, Safari, Edge) */
+    scrollbar-width: thin; /* Для Firefox */
+    scrollbar-color: var(--border-color) var(--menu-bg-color); /* Для Firefox */
+}
+
+.reaction-menu-scroll-area::-webkit-scrollbar {
+    width: 6px;
+}
+
+.reaction-menu-scroll-area::-webkit-scrollbar-track {
+    background: transparent; /* Фон трека */
+    margin: 2px 0;
+}
+
+.reaction-menu-scroll-area::-webkit-scrollbar-thumb {
+    background-color: var(--border-color, #d1d1d1); /* Цвет ползунка */
+    border-radius: 10px;
+    border: 1px solid var(--menu-bg-color, #ffffff); /* Рамка вокруг ползунка, чтобы он не прилипал к краю */
+}
+
+.reaction-menu-category {
+    margin-bottom: 10px;
+}
+
+.reaction-menu-category:last-child {
+    margin-bottom: 0;
+}
+
+.reaction-menu-category-title {
+    font-size: 13px; /* Как на макете */
+    font-weight: 600; /* Жирный шрифт */
+    color: var(--primary-text-color, #333);
+    margin-bottom: 8px;
+    padding-left: 4px; /* Небольшой отступ слева для заголовка */
+    text-align: left;
+}
+
+.reaction-emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); /* Адаптивная сетка */
+    gap: 6px; /* Промежуток между эмодзи */
+    justify-content: start;
+}
+
+.reaction-emoji-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;  /* Размер ячейки */
+    height: 36px; /* Размер ячейки */
+    font-size: 24px; /* Размер самого эмодзи */
+    cursor: pointer;
+    border-radius: 8px; /* Скругление для ховера */
+    transition: background-color 0.1s ease-out;
+    line-height: 1; /* Для вертикального центрирования эмодзи */
+    padding: 0;
+    background: none;
+    border: none;
+}
+
+.reaction-emoji-item:hover {
+    background-color: var(--menu-item-hover-bg, #f1f3f4);
+}
+
+.reaction-emoji-item:active {
+    background-color: var(--menu-item-selected-bg, #e0e0e0);
+}
+
+.reaction-menu-no-results {
+    padding: 10px;
+    text-align: center;
+    color: var(--placeholder-color);
+    font-style: italic;
+}

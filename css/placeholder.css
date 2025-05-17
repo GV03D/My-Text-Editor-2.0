@@ -1,0 +1,156 @@
+/* css/placeholder.css */
+/* ======================================================== */
+/* Placeholder Styles                                     */
+/* ======================================================== */
+
+/* General placeholder for contenteditable elements */
+.block-content.is-empty::before,
+.toggle-title.is-empty::before {
+    position: absolute;
+    top: var(--base-content-padding-top);
+    left: var(--base-content-padding-left); /* Base left padding for placeholder */
+    color: var(--placeholder-color);
+    pointer-events: none;
+    user-select: none;
+    display: block;
+    content: ''; /* Default empty content, overridden by specific types */
+    line-height: 1.5;
+    font-size: inherit;
+    font-weight: normal;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%; /* Prevent overflow */
+    z-index: 2; /* Above block content potentially */
+}
+
+/* Specific placeholders for different block types */
+.editor-block[data-block-type="p"] > .block-content.is-empty::before,
+.editor-block:not([data-block-type]) > .block-content.is-empty::before { /* Default to paragraph */
+    content: 'Введите текст или нажмите «/», чтобы выбрать блок';
+    left: 4px; /* Matches paragraph content padding */
+}
+
+.editor-block[data-block-type="li"] > .block-content.is-empty::before {
+    content: 'Пункт списка';
+    left: calc(var(--prefix-text-indent) - 4px); /* Aligns with list item text */
+}
+
+.editor-block[data-block-type="todo"] > .block-content.is-empty::before {
+    content: 'Задача';
+    left: calc(var(--prefix-text-indent) - 4px); /* Aligns with todo text */
+}
+
+.editor-block[data-block-type="toggle"] .toggle-title.is-empty::before {
+    content: 'Заголовок выпадающего списка';
+    left: calc(var(--prefix-text-indent) + 2px); /* Aligns with toggle title text */
+    top: var(--base-content-padding-top);
+}
+
+.editor-block[data-block-type="quote"] > .block-content.is-empty::before,
+.editor-block[data-in-quote="true"] > .block-content.is-empty::before {
+    content: 'Цитата';
+    left: var(--quote-text-padding-left-effective); /* Aligns with quote text */
+}
+
+.editor-block[data-block-type^="h"] > .block-content.is-empty::before { /* For h1, h2, h3 */
+    content: 'Заголовок';
+    left: var(--base-content-padding-left); /* Aligns with heading text */
+}
+
+/* Placeholders inside toggle children */
+.toggle-children-wrapper > .editor-block[data-block-type="p"] > .block-content.is-empty::before {
+    content: 'Введите текст или нажмите «/», чтобы выбрать блок';
+    left: 2px; /* Specific to toggle children para */
+}
+
+.toggle-children-wrapper > .editor-block[data-block-type^="h"] > .block-content.is-empty::before {
+    content: 'Заголовок';
+    left: 2px; /* Specific to toggle children heading */
+}
+
+.toggle-children-wrapper > .editor-block[data-block-type="li"] > .block-content.is-empty::before {
+    content: 'Пункт списка';
+    left: calc(var(--prefix-text-indent) - 4px);
+}
+
+.toggle-children-wrapper > .editor-block[data-block-type="todo"] > .block-content.is-empty::before {
+    content: 'Задача';
+    left: calc(var(--prefix-text-indent) - 4px);
+}
+
+.toggle-children-wrapper > .editor-block[data-block-type="quote"] > .block-content.is-empty::before,
+.toggle-children-wrapper > .editor-block[data-in-quote="true"] > .block-content.is-empty::before {
+    content: 'Цитата';
+    left: var(--quote-text-padding-left-effective);
+}
+
+/* Initial placeholder for empty document */
+.editor-block[data-initial-placeholder="true"] .block-content.is-empty::before,
+.editor-block[data-initial-placeholder="true"] .toggle-title.is-empty::before {
+    content: 'Нажмите Enter, чтобы начать работу с новым документом';
+}
+
+.editor-block[data-initial-placeholder="true"][data-block-type="p"] > .block-content.is-empty::before {
+    left: 0px;
+}
+.editor-block[data-initial-placeholder="true"][data-block-type^="h"] > .block-content.is-empty::before {
+    left: var(--base-content-padding-left);
+}
+.editor-block[data-initial-placeholder="true"][data-block-type="li"] > .block-content.is-empty::before {
+    left: calc(var(--prefix-text-indent) - 4px);
+}
+.editor-block[data-initial-placeholder="true"][data-block-type="todo"] > .block-content.is-empty::before {
+    left: calc(var(--prefix-text-indent) - 4px);
+}
+.editor-block[data-initial-placeholder="true"][data-block-type="toggle"] .toggle-title.is-empty::before {
+    left: calc(var(--prefix-text-indent) + 2px);
+}
+.editor-block[data-initial-placeholder="true"][data-block-type="quote"] > .block-content.is-empty::before {
+    left: var(--quote-text-padding-left-effective);
+}
+.editor-block[data-initial-placeholder="true"][data-block-type="callout"] .callout-content-wrapper > .editor-block:first-child .block-content.is-empty::before {
+    content: 'Нажмите Enter, чтобы начать работу с новым документом';
+    left: 0; /* Placeholder for first block in callout */
+}
+
+/* Placeholder for slash command */
+.block-content.is-slash-placeholder {
+    color: var(--placeholder-color);
+    font-style: normal;
+    background-color: var(--selection-bg-color);
+    padding: 0 2px;
+    border-radius: 3px;
+    display: inline; /* So it doesn't take full width */
+    user-select: none;
+    cursor: default;
+}
+
+.block-content.is-slash-placeholder::before {
+    display: none !important; /* Hide default placeholder when slash placeholder is active */
+}
+
+/* Placeholder styling for contenteditable title in the document title bar */
+.editable-title[contenteditable="true"]:empty::before {
+    content: attr(placeholder);
+    color: var(--placeholder-color);
+    cursor: text;
+    position: absolute;
+    left: 0; /* Align with padding of .editable-title */
+    top: 2px; /* Align with padding of .editable-title */
+    padding-top: inherit;
+    padding-bottom: inherit;
+    line-height: inherit;
+    pointer-events: none; /* Allow clicks to focus the element */
+    display: block; /* Ensure it takes up space */
+    user-select: none;
+}
+
+.editable-title[contenteditable="true"][data-placeholder-active="true"]::before {
+    content: attr(placeholder); /* Show placeholder when data-attribute is true */
+}
+
+.editable-title[contenteditable="true"]:not(:empty)::before {
+    display: none; /* Hide if not empty */
+}

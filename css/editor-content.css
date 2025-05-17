@@ -1,0 +1,110 @@
+/* css/editor-content.css */
+/* ======================================================== */
+/* Main Content Area, Document Title, and Editor Area Styles */
+/* ======================================================== */
+
+.main-content {
+    flex-grow: 1;
+    padding-left: 0; /* Content itself will have padding */
+    padding-right: 0;
+    padding-top: 30px; /* Space for title bar */
+    padding-bottom: 50px; /* Space at the bottom */
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    overflow-y: auto;
+    position: relative;
+    border: 1.5px solid var(--frame-border-color);
+    border-radius: var(--frame-border-radius, 10px);
+    margin-left: 0; /* Adjust if sidebars are not fixed width or if there's a gap */
+    margin-right: 0;
+    margin-top: var(--frame-vertical-margin);
+    margin-bottom: var(--frame-vertical-margin);
+    height: calc(100% - (2 * var(--frame-vertical-margin)));
+    overflow-x: hidden;
+    z-index: 1;
+}
+
+.document-title-bar {
+    display: flex;
+    align-items: center;
+    padding: 15px var(--content-inner-padding, 100px);
+    border-bottom: none;
+    margin-bottom: 0;
+    flex-shrink: 0;
+    max-width: var(--content-max-width, 900px);
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    position: relative; /* For absolute positioned placeholder */
+}
+
+.editable-title {
+    min-height: 20px; /* Ensure it has some height even when empty */
+    border-radius: 4px;
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--primary-text-color);
+    line-height: 1.4;
+    padding: 2px 0; /* Minimal padding */
+    outline: none;
+    width: 100%;
+    cursor: text;
+    border: 0px solid transparent; /* No border by default */
+    transition: border-color 0.2s ease;
+    position: relative; /* For ::before placeholder */
+    box-sizing: border-box;
+    margin-left: 0;
+    margin-bottom: -0.025em; /* Fine-tune baseline */
+    font-family: inherit;
+}
+
+.editable-title:focus, .editable-title:focus-visible {
+    outline: none; /* Remove default browser outline */
+}
+
+/* Placeholder styling for contenteditable title */
+.editable-title[contenteditable="true"]:empty::before {
+    content: attr(placeholder);
+    color: var(--placeholder-color);
+    cursor: text;
+    position: absolute;
+    left: 0; /* Align with padding of .editable-title */
+    top: 2px; /* Align with padding of .editable-title */
+    padding-top: inherit;
+    padding-bottom: inherit;
+    line-height: inherit;
+    pointer-events: none; /* Allow clicks to focus the element */
+    display: block; /* Ensure it takes up space */
+    user-select: none;
+}
+
+.editable-title[contenteditable="true"][data-placeholder-active="true"]::before {
+    content: attr(placeholder); /* Show placeholder when data-attribute is true */
+}
+
+.editable-title[contenteditable="true"]:not(:empty)::before {
+    display: none; /* Hide if not empty */
+}
+
+.editor-area {
+    flex-grow: 1;
+    padding-top: 0; /* Space from title bar is handled by title bar's margin/padding */
+    padding-bottom: 150px; /* Generous space at the bottom */
+    padding-left: var(--content-inner-padding, 100px);
+    padding-right: var(--content-inner-padding, 100px);
+    outline: none;
+    max-width: var(--content-max-width, 900px);
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+
+.editor-placeholder { /* Fallback if editor is empty */
+    color: var(--placeholder-color);
+    font-style: italic;
+    padding: 20px 0; /* Centered within editor-area's padding */
+}

@@ -1,0 +1,106 @@
+/* css/block-types/quote.css */
+/* ======================================================== */
+/* Quote Block Specific Styles                            */
+/* ======================================================== */
+
+.editor-area .editor-block[data-block-type="quote"],
+.editor-area .editor-block[data-in-quote="true"] {
+    display: block;
+    position: relative;
+    margin-left: var(--quote-block-margin-left);
+    padding-left: 0;
+    background-color: transparent;
+    margin-bottom: var(--default-block-margin-bottom);
+    border-radius: 0; /* Quotes typically don't have rounded corners on their own */
+    border: 1px solid transparent; /* Base for potential hover/selection */
+    border-left: none !important; /* Vertical bar is via ::before or separate element */
+}
+
+.editor-area .editor-block[data-block-type="quote"] > .quote-indicator,
+.editor-area .editor-block[data-in-quote="true"] > .quote-indicator { /* The vertical bar */
+    content: "";
+    display: block;
+    position: absolute;
+    left: var(--quote-indicator-left-pos);
+    top: 0;
+    height: 100%;
+    width: calc(var(--quote-bar-width, 2px) + 1px); /* Ensure it's visible */
+    background-color: var(--primary-text-color);
+    pointer-events: none;
+    z-index: 0; /* Behind content */
+}
+
+/* Connected quote blocks styling */
+.editor-area .editor-block[data-block-type="quote"] + .editor-block[data-block-type="quote"].quote-block-following,
+.editor-area .editor-block[data-block-type="quote"] + .editor-block[data-in-quote="true"].quote-block-following,
+.editor-area .editor-block[data-in-quote="true"] + .editor-block[data-in-quote="true"].quote-block-following,
+.editor-area .editor-block[data-in-quote="true"] + .editor-block[data-block-type="quote"].quote-block-following {
+    margin-top: calc(0px - var(--default-block-margin-bottom) - 1px); /* Overlap margins */
+    border-top-width: 0;
+    padding-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    z-index: 2; /* Ensure it's above previous for seamless bar */
+}
+
+/* Round top corners for the first quote block in a sequence */
+.editor-area .editor-block[data-block-type="quote"]:first-child,
+.editor-area .editor-block:not([data-block-type="quote"]):not([data-in-quote="true"]) + .editor-block[data-block-type="quote"]:not(.quote-block-following),
+.editor-area .editor-block:not([data-block-type="quote"]):not([data-in-quote="true"]) + .editor-block[data-in-quote="true"]:not(.quote-block-following) {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+/* Round bottom corners for the last quote block in a sequence */
+.editor-area .editor-block[data-block-type="quote"]:last-child,
+.editor-area .editor-block[data-in-quote="true"]:last-child {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    margin-bottom: var(--default-block-margin-bottom);
+}
+
+/* Ensure consistent bottom margin for quote blocks that are followed by another quote block */
+.editor-area .editor-block[data-block-type="quote"] + .editor-block[data-block-type="quote"],
+.editor-area .editor-block[data-block-type="quote"] + .editor-block[data-in-quote="true"],
+.editor-area .editor-block[data-in-quote="true"] + .editor-block[data-in-quote="true"],
+.editor-area .editor-block[data-in-quote="true"] + .editor-block[data-block-type="quote"] {
+    padding-bottom: 1px; /* Ensure some space if styles change */
+    margin-bottom: var(--default-block-margin-bottom);
+}
+
+/* Text content padding for quotes */
+.editor-area .editor-block[data-block-type="quote"] > .block-content,
+.editor-area .editor-block[data-in-quote="true"] > .block-content {
+    padding-left: var(--quote-text-padding-left-effective) !important;
+    margin-left: 0;
+    padding-top: var(--base-content-padding-top);
+    padding-bottom: var(--base-content-padding-top);
+    padding-right: var(--base-content-padding-left);
+    flex-grow: 1;
+}
+
+/* Drag handle positioning for quote blocks */
+.editor-block[data-block-type="quote"] > .drag-handle,
+.editor-block[data-in-quote="true"] > .drag-handle {
+    top: 2px; /* Align with typical paragraph line height start */
+}
+
+/* Placeholder styles specific to quote blocks */
+.editor-block[data-block-type="quote"] > .block-content.is-empty::before,
+.editor-block[data-in-quote="true"] > .block-content.is-empty::before {
+    content: 'Цитата';
+    left: var(--quote-text-padding-left-effective); /* Aligns with quote text */
+}
+
+/* Placeholders inside toggle children for quote blocks */
+.toggle-children-wrapper > .editor-block[data-block-type="quote"] > .block-content.is-empty::before,
+.toggle-children-wrapper > .editor-block[data-in-quote="true"] > .block-content.is-empty::before {
+    content: 'Цитата';
+    left: var(--quote-text-padding-left-effective);
+}
+
+/* Initial placeholder for empty document for quote blocks */
+.editor-block[data-initial-placeholder="true"][data-block-type="quote"] > .block-content.is-empty::before {
+    /* content is already set by a more general rule in placeholder.css, only left needs adjustment if different */
+    left: var(--quote-text-padding-left-effective);
+}
