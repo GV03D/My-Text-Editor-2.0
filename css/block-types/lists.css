@@ -1,0 +1,166 @@
+/* css/block-types/lists.css */
+/* ======================================================== */
+/* List Item (li) and To-do (todo) Block Specific Styles  */
+/* ======================================================== */
+
+/* List items (li, todo) prefix (marker/checkbox) positioning */
+.editor-area .editor-block[data-block-type="li"] > span.list-marker,
+.editor-area .editor-block[data-block-type="todo"] > span.block-checkbox {
+    position: absolute;
+    left: var(--prefix-container-left-adjust);
+    top: var(--prefix-container-top-adjust);
+    width: var(--prefix-container-width);
+    height: var(--prefix-container-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    z-index: 1;
+    padding: 0;
+    margin-left: 0;
+}
+
+.editor-area .editor-block[data-block-type="li"][data-list-type="ol"] > span.list-marker {
+    justify-content: flex-end; /* Align number to the right for OL */
+    padding-right: 4px;
+}
+
+.editor-area .editor-block[data-block-type="li"] > span.list-marker {
+    pointer-events: none; /* Marker itself is not interactive */
+}
+
+.editor-area .editor-block[data-block-type="todo"] > span.block-checkbox {
+    pointer-events: auto; /* Checkbox is interactive */
+    cursor: pointer;
+}
+
+/* Text content padding for li/todo to accommodate the prefix */
+.editor-area .editor-block[data-block-type="li"] > .block-content,
+.editor-area .editor-block[data-block-type="todo"] > .block-content {
+    padding-left: calc(var(--prefix-text-indent) - 4px); /* Adjust for desired text start */
+    margin-left: 0;
+}
+
+/* List markers styling */
+.editor-area .editor-block[data-block-type="li"] > span.list-marker::before {
+    display: block;
+    text-align: center;
+    font-size: inherit;
+    line-height: 1;
+    color: var(--primary-text-color);
+    position: relative;
+    top: 0;
+}
+
+.editor-area .editor-block[data-block-type="li"][data-list-type="ul"]:not([data-indent-level="2"]) > span.list-marker::before {
+    content: "•"; /* Bullet for level 0 and 1 UL */
+    font-size: 2.1em;
+    top: -2.5px;
+}
+
+.editor-area .editor-block[data-block-type="li"][data-list-type="ul"][data-indent-level="1"] > span.list-marker::before {
+    content: "◦"; /* Circle for level 1 UL */
+}
+
+.editor-area .editor-block[data-block-type="li"][data-list-type="ul"][data-indent-level="2"] > span.list-marker::before {
+    content: "▪"; /* Square for level 2 UL */
+    top: -1.5px;
+    font-size: calc(2.1em - 4px);
+}
+
+.editor-area .editor-block[data-block-type="li"][data-list-type="ol"] > span.list-marker::before {
+    content: attr(data-list-number, " ") "."; /* Number for OL */
+    text-align: right;
+    position: relative;
+    right: 2px;
+}
+
+/* Todo checkbox styling */
+.editor-block[data-block-type="todo"] span.block-checkbox::before {
+    content: "";
+    display: block;
+    width: var(--todo-checkbox-size);
+    height: var(--todo-checkbox-size);
+    border: 2px solid var(--checkbox-border-color);
+    border-radius: 0; /* Square checkbox */
+    background-color: #fff;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    box-sizing: border-box;
+    position: relative;
+    pointer-events: none;
+}
+
+.editor-block[data-block-type="todo"]:hover span.block-checkbox::before {
+    border-color: var(--checkbox-border-hover-color);
+}
+
+.editor-block[data-block-type="todo"][data-checked="true"] span.block-checkbox::before {
+    background-color: var(--checkbox-checked-bg);
+    border-color: var(--checkbox-checked-border);
+}
+
+.editor-block[data-block-type="todo"][data-checked="true"] span.block-checkbox::after { /* Checkmark */
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: translate(-50%, calc(-50% - 2px)) rotate(45deg);
+    pointer-events: none;
+}
+
+.editor-block[data-block-type="todo"][data-checked="true"] .block-content {
+    text-decoration: line-through;
+    color: var(--todo-done-text-color);
+}
+
+/* Drag handle positioning for list items */
+.editor-block[data-block-type="li"] > .drag-handle,
+.editor-block[data-block-type="todo"] > .drag-handle {
+    top: var(--prefix-container-top-adjust, 2px);
+    height: var(--prefix-container-height, 1.5em);
+}
+
+/* Shake animation for temporary error highlight on list items */
+/* This could also go into a general ui-feedback.css or similar if used by other elements */
+@keyframes simple-shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+    20%, 40%, 60%, 80% { transform: translateX(3px); }
+}
+.editor-area .editor-block.shake-marker[data-block-type="li"] > span.list-marker {
+    animation: simple-shake 0.4s ease-in-out 1;
+}
+
+/* Placeholder styles specific to list items and todos */
+.editor-block[data-block-type="li"] > .block-content.is-empty::before {
+    content: 'Пункт списка';
+    left: calc(var(--prefix-text-indent) - 4px); /* Aligns with list item text */
+}
+.editor-block[data-block-type="todo"] > .block-content.is-empty::before {
+    content: 'Задача';
+    left: calc(var(--prefix-text-indent) - 4px); /* Aligns with todo text */
+}
+
+/* Placeholders inside toggle children for list items and todos */
+.toggle-children-wrapper > .editor-block[data-block-type="li"] > .block-content.is-empty::before {
+    content: 'Пункт списка';
+    left: calc(var(--prefix-text-indent) - 4px);
+}
+.toggle-children-wrapper > .editor-block[data-block-type="todo"] > .block-content.is-empty::before {
+    content: 'Задача';
+    left: calc(var(--prefix-text-indent) - 4px);
+}
+
+/* Initial placeholder for empty document for list items and todos */
+.editor-block[data-initial-placeholder="true"][data-block-type="li"] > .block-content.is-empty::before {
+    /* content is already set by a more general rule in placeholder.css, only left needs adjustment if different */
+    left: calc(var(--prefix-text-indent) - 4px);
+}
+.editor-block[data-initial-placeholder="true"][data-block-type="todo"] > .block-content.is-empty::before {
+    /* content is already set by a more general rule in placeholder.css, only left needs adjustment if different */
+    left: calc(var(--prefix-text-indent) - 4px);
+}

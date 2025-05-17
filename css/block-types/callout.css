@@ -1,0 +1,83 @@
+/* css/block-types/callout.css */
+/* ======================================================== */
+/* Callout Block Specific Styles                          */
+/* ======================================================== */
+
+.editor-area .editor-block.callout-block {
+    display: flex;
+    align-items: baseline;
+    background-color: var(--callout-bg-color);
+    padding: 12px 16px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    position: relative;
+    border-left: none !important;
+    margin-bottom: var(--default-block-margin-bottom);
+}
+
+.callout-icon {
+    font-size: 1.3em;
+    margin-right: 8px;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.callout-content-wrapper {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.callout-content-wrapper > .editor-block:last-child {
+    margin-bottom: 0 !important; /* No margin for the last block inside callout */
+}
+
+/* Indentation for blocks inside callout containers */
+.callout-content-wrapper .editor-block[data-indent-level="1"] { margin-left: calc(var(--nested-block-indent-step) * 1); }
+.callout-content-wrapper .editor-block[data-indent-level="2"] { margin-left: calc(var(--nested-block-indent-step) * 2); }
+.callout-content-wrapper .editor-block[data-indent-level="3"] { margin-left: calc(var(--nested-block-indent-step) * 3); }
+.callout-content-wrapper .editor-block[data-indent-level="4"] { margin-left: calc(var(--nested-block-indent-step) * 4); }
+.callout-content-wrapper .editor-block[data-indent-level="5"] { margin-left: calc(var(--nested-block-indent-step) * 5); }
+.callout-content-wrapper .editor-block[data-indent-level="6"] { margin-left: calc(var(--nested-block-indent-step) * 6); }
+.callout-content-wrapper .editor-block[data-indent-level="7"] { margin-left: calc(var(--nested-block-indent-step) * 7); }
+.callout-content-wrapper .editor-block[data-indent-level="8"] { margin-left: calc(var(--nested-block-indent-step) * 8); }
+
+/* Placeholder styles specific to callout blocks */
+.editor-block[data-initial-placeholder="true"][data-block-type="callout"] .callout-content-wrapper > .editor-block:first-child .block-content.is-empty::before {
+    content: 'Нажмите Enter, чтобы начать работу с новым документом';
+    left: 0; /* Placeholder for first block in callout */
+}
+
+/* Selection styles for callout blocks */
+.editor-area .editor-block.callout-block.block-selected {
+    border-color: transparent;
+    box-shadow: none;
+    border-radius: var(--frame-border-radius, 10px); /* Consistent with other selected container-like blocks */
+    position: relative; /* For ::before overlay */
+    outline: none;
+}
+
+.editor-area .editor-block.callout-block.block-selected::before { /* Overlay for callout selection */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(var(--selection-bg-color-rgb), 0.6);
+    border-radius: inherit;
+    z-index: 0;
+    pointer-events: none;
+    transition: background-color 0.15s ease-out;
+}
+
+.editor-area .editor-block.callout-block:not(.block-selected) {
+    background-color: var(--callout-bg-color);
+    border-color: transparent;
+    box-shadow: none;
+    outline: none;
+    border-radius: 6px;
+}
+
+.editor-area .editor-block.callout-block:not(.block-selected)::before {
+    content: none; /* Remove selection overlay */
+}

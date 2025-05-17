@@ -1,0 +1,149 @@
+:root {
+    --primary-text-color: #333;
+    --secondary-text-color: #555;
+    --placeholder-color: #aaa;
+    --border-color: #e0e0e0;
+    --frame-border-color: #e0e0e0;
+    --hover-bg-color: #f1f3f4;
+    --hover-bg-color-rgb: 241, 243, 244;
+    --selection-bg-color: #F6F6F6;
+    --selection-bg-color-rgb: 246, 246, 246;
+    --menu-bg-color: #ffffff;
+    --menu-border-color: var(--border-color);
+    --menu-shadow-color: rgba(0, 0, 0, 0.1);
+    --menu-item-hover-bg: var(--hover-bg-color);
+    --menu-item-selected-bg: #ededed;
+    --callout-bg-color: #DDE6FF;
+    --focus-ring-color: #a0c3ff;
+    --focus-ring-color-rgb: 160, 195, 255;
+    --handle-color: #aaa;
+    --todo-done-text-color: #999;
+    --image-placeholder-text-color: #888;
+    --primary-button-bg: #4285f4;
+    --primary-button-text: #ffffff;
+    --primary-button-hover-bg: #357ae8;
+    --disabled-button-bg: #a0c3ff;
+    --inline-code-bg-color: #f0f0f0;
+    --inline-code-text-color: #D0695C;
+    --link-text-color: #6D6C69;
+    --link-border-color: #C2C1BF;
+    --link-hover-menu-icon-color: #888;
+    --link-hover-menu-button-color: #555;
+    --link-hover-menu-button-hover-bg: #f0f0f0;
+
+    --comment-highlight-bg: #FEF9E8;
+    --comment-highlight-underline: #FBE9AF;
+    --comment-quote-indicator-color: #F2D05F;
+    --comment-reply-quote-indicator-color: #E6E6E6;
+    --comment-author-color: #333;
+    --comment-timestamp-color: #888;
+    --comment-original-text-color: #757575;
+    --comment-text-color: #555;
+    --comment-reply-input-border-color: #e0e0e0;
+    --comment-reply-input-border-focus: #a0a0a0;
+    --comment-send-button-active-bg: transparent;
+    --comment-send-button-inactive-bg: transparent;
+    --comment-action-button-size: 26px;
+    --comment-action-button-icon-size: 14px;
+    --comment-action-button-hover-bg: rgba(0, 0, 0, 0.05);
+    --comment-action-button-hover-radius: 6px;
+    --comment-action-context-menu-bg: var(--menu-bg-color);
+    --comment-action-context-menu-border: var(--menu-border-color);
+    --comment-action-context-menu-shadow: var(--menu-shadow-color);
+    --comment-action-context-item-hover-bg: var(--menu-item-hover-bg);
+    --comment-action-context-icon-color: var(--secondary-text-color);
+
+    --sidebar-width: 280px;
+    --sidebar-internal-padding: 10px;
+    --sidebar-vertical-spacing: 5px;
+    --sidebar-item-top-margin: 5px;
+    --sidebar-item-horizontal-margin: 5px;
+
+    --frame-vertical-margin: 15px;
+    --frame-border-radius: 15px;
+    --noise-opacity: 0.2;
+    --content-max-width: 900px;
+    --content-inner-padding: 100px;
+    --default-block-margin-bottom: 5px;
+    --nested-block-indent-step: 28px;
+
+    --drop-indicator-color: #8FCDFF;
+    --drop-indicator-gradient-start-color: rgba(143, 205, 255, 0.2);
+    --drop-indicator-height: 4px;
+    --drop-indicator-color-rgb: 143, 205, 255;
+    --list-highlight-bg-color: rgba(143, 205, 255, 0.15);
+
+    --common-text-indent: 32px;
+    --paragraph-text-indent: 0px;
+    --heading1-text-indent: 0px;
+    --heading1-padding-top: 2px;
+    --heading1-padding-bottom: 2px;
+    --heading2-text-indent: 0px;
+    --heading2-padding-top: 5px;
+    --heading2-padding-bottom: 5px;
+    --heading3-text-indent: 0px;
+    --heading3-padding-top: 4px;
+    --heading3-padding-bottom: 4px;
+    --base-content-padding-left: 4px;
+    --base-content-padding-top: 2px;
+
+    --quote-block-margin-left: 0px;
+    --quote-bar-width: 2px;
+    --quote-indicator-left-pos: 4px;
+    --quote-text-padding-left-effective: calc(var(--common-text-indent) - 9px);
+
+    --prefix-text-indent-base: var(--common-text-indent);
+    --prefix-additional-indent: var(--base-content-padding-left);
+    --prefix-text-indent: calc(var(--prefix-text-indent-base) + var(--prefix-additional-indent) - 5px);
+    --prefix-container-width: 1.5em;
+    --prefix-container-height: 1.5em;
+    --prefix-container-top-adjust: 2px;
+    --prefix-container-left-adjust: 3px;
+
+    --todo-checkbox-size: 18px;
+    --checkbox-border-color: #adb5bd;
+    --checkbox-border-hover-color: #495057;
+    --checkbox-checked-bg: #4285f4;
+    --checkbox-checked-border: #4285f4;
+
+    --toggle-children-top-margin: var(--default-block-margin-bottom);
+
+    --color-swatch-size: 25px;
+    --color-swatch-gap: 7px;
+
+    --comment-avatar-size: 28px;
+    --comment-header-gap: 8px;
+    --comment-original-text-indicator-width: 3px;
+    --comment-original-text-indent: 8px;
+
+    --comment-panels-wrapper-padding-top: 20px;
+    --comment-panels-wrapper-extra-horizontal-padding: 15px;
+    --dynamic-comment-panel-width: var(--sidebar-width, 300px);
+    --comment-thread-line-color: #E0E0E0;
+
+
+    --sidebar-item-superellipse-radius: var(--frame-border-radius, 12px);
+    --sidebar-corner-smoothing-factor: 0.5;
+    --sidebar-item-bg-color-default: #FFFFFF;
+    --sidebar-item-border-color-default: var(--border-color);
+    --sidebar-item-border-thickness-default: 1.5px;
+    --sidebar-item-bg-color-hover: var(--hover-bg-color);
+    --sidebar-item-border-color-hover: var(--hover-bg-color);
+    --sidebar-item-bg-color-active: #FFFFFF;
+    --sidebar-item-border-color-active: #333333;
+    --sidebar-item-bg-color-new-button-active: #e8e8e8;
+    --sidebar-item-border-color-new-button-active: #e8e8e8;
+    --sidebar-item-bg-color-transparent: transparent;
+    --sidebar-item-border-color-transparent: transparent;
+    --sidebar-interactive-item-height: 40px;
+    --sidebar-item-padding-vertical: 5px;
+    --sidebar-item-padding-horizontal: 5px;
+    --sidebar-item-icon-padding-left: 8px;
+
+    --comment-panel-superellipse-radius: 20px;
+    --comment-panel-corner-smoothing-factor: 0.6;
+    --comment-panel-background-color: var(--menu-bg-color, #FFFFFF);
+    --comment-panel-border-color-value: var(--border-color, #E6E6E6);
+    --comment-panel-border-thickness-value: 1.5px;
+    --comment-panel-border-color-hover-value: var(--primary-text-color, #333333);
+}

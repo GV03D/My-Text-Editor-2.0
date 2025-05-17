@@ -1,0 +1,229 @@
+/* css/block-types/image.css */
+/* ======================================================== */
+/* Image Block Styles */
+/* ======================================================== */
+.editor-block.image-placeholder-block { /* Placeholder state */
+    background-color: transparent;
+    border: none; /* Or a dashed border: 1px dashed var(--border-color); */
+    border-radius: 4px;
+    padding: var(--base-content-padding-top) 10px;
+    min-height: 1.5em; /* Consistent with other blocks */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-bottom: var(--default-block-margin-bottom);
+    padding-left: 10px !important; /* Override general block padding */
+    margin-left: 0 !important;
+}
+.image-placeholder-content {
+    display: flex;
+    align-items: center;
+    color: var(--image-placeholder-text-color);
+    pointer-events: none; /* Content itself is not interactive */
+    user-select: none;
+}
+.image-placeholder-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.image-placeholder-icon img {
+    max-width: 100%;
+    max-height: 100%;
+    filter: grayscale(80%) opacity(0.6);
+}
+.image-placeholder-text {
+    font-size: 0.95em;
+}
+.editor-block[data-block-type="image"] { /* Styles for block containing an actual image */
+    background-color: transparent;
+    border: 1px solid var(--border-color); /* Light border around the image block */
+    border-radius: 4px;
+    padding: 4px; /* Small padding around the image itself */
+    min-height: auto; /* Height will be determined by image */
+    display: block; /* Or 'flex' if you need to center image within a fixed height */
+    cursor: default;
+    margin-bottom: var(--default-block-margin-bottom);
+}
+.editor-block[data-block-type="image"] img {
+    display: block; /* Remove extra space below image */
+    max-width: 100%; /* Responsive image */
+    height: auto;
+    margin: 0 auto; /* Center image if block is wider */
+    border-radius: 2px; /* Slight rounding for the image itself */
+}
+
+/* Drag handle positioning for image blocks */
+.editor-block[data-block-type="image"] > .drag-handle {
+    top: 5px; /* Align near top of image block */
+}
+
+/* Selection styles for image blocks */
+.editor-area .editor-block[data-block-type="image"].block-selected { /* Specific for image selection */
+    background-color: var(--selection-bg-color);
+    border-color: var(--border-color); /* Maintain border for image selection */
+}
+.editor-area .editor-block[data-block-type="image"]:not(.block-selected) {
+    background-color: transparent;
+    border-color: var(--border-color); /* Default border for non-selected image block */
+    /* box-shadow, outline, border-radius are inherited or default */
+}
+
+
+/* ======================================================== */
+/* Стили для Image Block Menu */
+/* ======================================================== */
+.image-menu {
+    position: absolute;
+    z-index: 1060; /* Above most other elements */
+    background-color: var(--menu-bg-color);
+    border: 1px solid var(--menu-border-color);
+    border-radius: 8px;
+    box-shadow: 0 6px 16px var(--menu-shadow-color);
+    padding: 0; /* Tabs and content will have their own padding */
+    width: 350px; /* Fixed width */
+    display: none; /* Shown by JS */
+    font-size: 14px;
+    overflow: hidden; /* Prevent content spill */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.image-menu-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--menu-border-color);
+    background-color: var(--menu-bg-color); /* Ensure tabs have background */
+    padding: 0;
+    position: relative; /* For z-index context if needed */
+}
+.image-menu-tab {
+    flex: 1 1 0; /* Distribute space equally */
+    padding: 10px 12px;
+    text-align: center;
+    background: none;
+    border: none; /* Remove default button border */
+    border-bottom: 2px solid transparent; /* For active state indicator */
+    margin-bottom: -1px; /* Overlap with content border */
+    cursor: pointer;
+    font-size: 0.9em;
+    color: var(--secondary-text-color);
+    transition: color 0.2s ease, border-color 0.2s ease;
+    font-weight: 500;
+    position: static; /* Reset button positioning */
+    border-radius: 0; /* No radius for tabs */
+    font-family: inherit;
+}
+.image-menu-tab:hover {
+    color: var(--primary-text-color);
+}
+.image-menu-tab.active {
+    color: var(--primary-text-color);
+    border-bottom-color: var(--primary-button-bg); /* Active tab indicator */
+    background-color: transparent;
+    border-left: none; border-right: none; border-top: none; /* Clean borders */
+    z-index: auto; /* Ensure active tab is visually on top if needed */
+    margin-bottom: -1px; /* Maintain overlap */
+}
+.image-menu-tab.active::before, /* Remove any pseudo-elements if inherited */
+.image-menu-tab.active::after {
+    content: none;
+}
+.image-menu-content {
+    padding: 0 15px; /* Padding for tab content areas */
+    background-color: var(--menu-bg-color);
+    border-radius: 0;
+    border-top: none; /* No top border as tabs handle it */
+    clear: both; /* Ensure it contains floated children if any */
+    position: static;
+    z-index: auto;
+    margin-top: 0;
+}
+.image-menu-tab-content {
+    display: none; /* Hide inactive tabs */
+    text-align: center;
+    padding: 0; /* Content itself will be padded */
+}
+.image-menu-tab-content.active {
+    display: block; /* Show active tab content */
+}
+/* Specific padding/margin for upload tab content */
+.image-menu-tab-content[data-tab-content="upload"] {
+    padding-top: 10px; padding-bottom: 0;
+}
+.image-menu-tab-content[data-tab-content="upload"] > .image-menu-button {
+    margin-top: 0; margin-bottom: 10px;
+}
+.image-menu-tab-content[data-tab-content="upload"] > .image-menu-info {
+    margin-top: 0; margin-bottom: 10px;
+}
+/* Specific padding/margin for link tab content */
+.image-menu-tab-content[data-tab-content="link"] {
+    padding-top: 10px; padding-bottom: 0;
+}
+.image-menu-tab-content[data-tab-content="link"] > .image-menu-input {
+    margin-bottom: 10px; box-sizing: border-box;
+}
+.image-menu-tab-content[data-tab-content="link"] > .image-menu-button.primary {
+    display: block; width: 100%; box-sizing: border-box;
+    margin-top: 0; margin-bottom: 10px;
+}
+.image-menu-tab-content[data-tab-content="link"] > .image-menu-button.primary:disabled {
+    background-color: var(--disabled-button-bg, #a0c3ff);
+    border-color: var(--disabled-button-bg, #a0c3ff);
+    color: rgba(255, 255, 255, 0.8);
+    cursor: not-allowed; opacity: 0.7;
+}
+.image-menu-tab-content[data-tab-content="link"] > .image-menu-button.primary:disabled:hover {
+    background-color: var(--disabled-button-bg, #a0c3ff); /* Maintain disabled look on hover */
+    border-color: var(--disabled-button-bg, #a0c3ff);
+}
+.image-menu-button { /* General button style within image menu */
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: #fff;
+    color: var(--primary-text-color);
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    font-family: inherit;
+}
+.image-menu-button:hover {
+    background-color: var(--hover-bg-color);
+    border-color: #ccc;
+}
+.image-menu-button.primary { /* Primary action button style */
+    background-color: var(--primary-button-bg);
+    border-color: var(--primary-button-bg);
+    color: var(--primary-button-text);
+}
+.image-menu-button.primary:not(:disabled):hover {
+    background-color: var(--primary-button-hover-bg);
+    border-color: var(--primary-button-hover-bg);
+}
+.image-menu-input { /* Input field style within image menu */
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 0.9em;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+.image-menu-input:focus {
+    border-color: var(--primary-button-bg); /* Highlight on focus */
+    box-shadow: 0 0 0 2px rgba(var(--focus-ring-color-rgb), 0.3);
+}
+.image-menu-input::placeholder {
+    color: var(--placeholder-color);
+}
+.image-menu-info { /* Informational text style */
+    font-size: 0.8em;
+    color: var(--placeholder-color);
+    font-family: inherit;
+}

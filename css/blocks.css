@@ -1,0 +1,102 @@
+/* css/blocks.css */
+/* ======================================================== */
+/* Editor Block Base Styles */
+/* ======================================================== */
+.editor-block {
+    display: block; /* Or flex, depending on internal structure */
+    margin-bottom: var(--default-block-margin-bottom);
+    position: relative;
+    border-radius: 3px; /* Default small radius */
+    border: 1px solid transparent; /* For selection/hover states */
+    padding: 0; /* Padding will be on content elements */
+    padding-left: 5px; /* Minimal base padding for non-indented blocks if needed */
+    margin-left: 0; /* Base margin */
+    border-left: none; /* Override browser defaults */
+    outline: none;
+    transition: background-color 0.15s ease-out, border-color 0.15s ease-out, border-radius 0.15s ease-out, margin-left 0.2s ease, outline-color 0.1s ease, box-shadow 0.15s ease-out;
+    background-color: #fff; /* Default block background */
+    z-index: 1;
+}
+.editor-block[data-block-type="callout"] { /* Callout is a flex container */
+    display: flex;
+    align-items: baseline; /* Align icon and content wrapper */
+}
+.editor-block[data-block-type="p"] {
+    padding-left: 0px; /* Paragraphs usually don't need extra left padding on the block itself */
+}
+.editor-block[data-block-type="toggle"] {
+    padding-left: 0px; /* Toggle block itself doesn't need left padding */
+}
+
+.editor-block .block-content { /* The actual editable area within a block */
+    outline: none;
+    min-height: 1.5em; /* Ensure it's clickable even when empty */
+    padding: var(--base-content-padding-top) var(--base-content-padding-left);
+    line-height: 1.5;
+    font-size: inherit; /* Inherit from .editor-block or body */
+    word-wrap: break-word;
+    position: relative; /* For placeholder */
+    margin-left: 0; /* Content starts at block's edge */
+    font-family: inherit;
+    z-index: 1; /* Above block's own potential background/borders if needed */
+    flex-grow: 1; /* If block is flex, content takes up space */
+    min-width: 0; /* Prevent overflow in flex context */
+}
+.editor-block[data-block-type="p"] > .block-content { /* Specific padding for paragraph text */
+    padding-left: 4px; /* Minimal text indent */
+}
+.editor-block .block-content:focus, .editor-block .block-content:focus-visible {
+    outline: none;
+}
+/* Toggle specific content elements */
+.toggle-main-content > .toggle-title { /* Editable title of toggle */
+    position: relative; /* For placeholder */
+    min-height: 1.5em;
+    line-height: 1.5;
+    outline: none;
+    padding-right: 4px;
+    padding-top: var(--base-content-padding-top);
+    padding-bottom: var(--base-content-padding-top);
+    padding-left: calc(var(--prefix-text-indent) + 2px); /* Indent for text after toggle icon */
+    margin-left: 0;
+}
+.toggle-main-content > .toggle-title:focus, .toggle-main-content > .toggle-title:focus-visible {
+    outline: none;
+}
+.editor-block[data-block-type="toggle"] > .toggle-main-content {
+    flex-grow: 1;
+    min-width: 0;
+    padding-left: 0;
+    margin-left: 0;
+    position: relative; /* For toggle indicator positioning */
+}
+.editor-block[data-block-type="toggle"] > .toggle-indicator-container {
+    position: absolute;
+    left: var(--prefix-container-left-adjust);
+    top: var(--prefix-container-top-adjust);
+    width: var(--prefix-container-width);
+    height: var(--prefix-container-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    z-index: 1; /* Above other content */
+    padding: 0;
+    margin-left: 0;
+    cursor: pointer;
+    pointer-events: auto; /* Clickable */
+}
+
+/* Reset margins for common HTML elements if inserted directly into contenteditable */
+[contenteditable="true"] p,
+[contenteditable="true"] h1,
+[contenteditable="true"] h2,
+[contenteditable="true"] h3,
+[contenteditable="true"] ul,
+[contenteditable="true"] ol,
+[contenteditable="true"] li,
+[contenteditable="true"] blockquote,
+[contenteditable="true"] div {
+    margin: 0;
+    padding: 0;
+}
